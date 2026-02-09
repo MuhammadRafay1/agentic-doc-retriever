@@ -1,22 +1,22 @@
 # Core Dependencies
-langchain==0.1.0
-langchain-community==0.0.10
-sentence-transformers==2.3.1
-transformers==4.36.2
+langchain>=0.1.0
+langchain-community>=0.0.10
+sentence-transformers>=2.3.0
+transformers>=4.36.0
 
 # Vector Databases
-faiss-cpu==1.7.4
-chromadb==0.4.22
+faiss-cpu>=1.8.0
+chromadb>=0.4.22
 
 # Document Processing
-PyPDF2==3.0.1
-python-docx==1.1.0
-tiktoken==0.5.2
+PyPDF2>=3.0.0
+python-docx>=1.1.0
+tiktoken>=0.5.0
 
 # GUI
 # Tkinter comes built-in with Python
 
 # Utilities
-numpy==1.24.3
-pandas==2.0.3
-tqdm==4.66.1
+numpy>=1.24.0
+pandas>=2.0.0
+tqdm>=4.66.0
