@@ -9,10 +9,10 @@ from typing import List, Dict, Tuple, Optional
 import logging
 
 # LangChain imports
-from langchain.text_splitter import RecursiveCharacterTextSplitter
+from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_community.embeddings import HuggingFaceEmbeddings
 from langchain_community.vectorstores import FAISS, Chroma
-from langchain.docstore.document import Document
+from langchain_core.documents import Document
 
 # Document loading
 import PyPDF2

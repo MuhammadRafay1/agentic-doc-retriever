@@ -1,8 +1,11 @@
 # Core Dependencies
 langchain>=0.1.0
 langchain-community>=0.0.10
+langchain-text-splitters>=0.0.1
+langchain-core>=0.1.0
 sentence-transformers>=2.3.0
 transformers>=4.36.0
+tf-keras  # Required for Keras 3 compatibility
 
 # Vector Databases
 faiss-cpu>=1.8.0
