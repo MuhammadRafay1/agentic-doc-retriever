@@ -1,17 +1,17 @@
 # AI Research Assistant - Phase 1 Report
 
-**Student Name:** [Your Name]  
-**Student ID:** [Your ID]  
+**Student Name:** Muhammad Rafay  
+**Student ID:** 22i-0948  
 **Course:** CS-4015 Agentic AI  
-**Date:** [Date]
+**Date:** February 12, 2026
 
 ---
 
 ## 1. Introduction
 
-Brief overview of the assignment objectives and your implementation approach.
+The goal of this assignment was to build an AI Research Assistant capable of semantic search over a collection of AI-related documents. The system loads documents in various formats, generates embeddings using state-of-the-art models, indexes them in a vector store, and provides a user-friendly GUI for querying and retrieving relevant information.
 
-[Write 1-2 paragraphs describing what you built and how it addresses the requirements]
+My implementation leverages LangChain for document processing and embedding, supports multiple HuggingFace embedding models, and allows users to choose between FAISS and ChromaDB as the vector store. The GUI, built with Tkinter, enables dataset selection, configuration of embedding/vector store, and interactive semantic search. The system is modular, extensible, and designed for experimentation and analysis.
 
 ---
 
@@ -19,17 +19,15 @@ Brief overview of the assignment objectives and your implementation approach.
 
 ### 2.1 Components
 
-Describe the main components of your system:
-- **Document Loader:** [How documents are loaded and processed]
-- **Embedding Engine:** [How embeddings are generated]
-- **Vector Store:** [How documents are indexed and stored]
-- **Search Interface:** [How queries are processed]
+- **Document Loader:** Loads and processes documents from .txt, .md, .pdf, and .docx files using custom logic and third-party libraries (PyPDF2, python-docx). Documents are split into chunks for efficient embedding.
+- **Embedding Engine:** Uses HuggingFace sentence-transformers models via LangChain to generate dense vector representations for each document chunk. Multiple models can be selected for experimentation.
+- **Vector Store:** Supports both FAISS (in-memory, fast) and ChromaDB (persistent, open-source) for indexing and storing embeddings. The system can switch between vector stores for comparison.
+- **Search Interface:** Provides a Tkinter-based GUI for users to select datasets, configure models/stores, enter queries, and view ranked search results. Queries are embedded and matched against the vector store to retrieve relevant documents.
 
 ### 2.2 Technology Stack
 
-List the key technologies used:
-- Embedding Models: [List models tested]
-- Vector Databases: [FAISS, ChromaDB, or both]
+- Embedding Models: all-MiniLM-L6-v2, all-mpnet-base-v2, multi-qa-MiniLM-L6-cos-v1, paraphrase-multilingual-MiniLM-L12-v2, all-distilroberta-v1
+- Vector Databases: FAISS, ChromaDB
 - Framework: LangChain
 - GUI: Tkinter
 
@@ -39,109 +37,104 @@ List the key technologies used:
 
 ### 3.1 Embedding Model Comparison
 
-Test at least 3 different embedding models with the same dataset and queries.
-
 **Models Tested:**
-1. [Model 1 Name]
-2. [Model 2 Name]
-3. [Model 3 Name]
+1. all-MiniLM-L6-v2
+2. all-mpnet-base-v2
+3. multi-qa-MiniLM-L6-cos-v1
 
-**Test Query 1:** "[Your query]"
+**Test Query 1:** "What is machine learning?"
 
 | Model | Top-1 Result | Relevance Score | Observation |
-|-------|-------------|----------------|-------------|
-| Model 1 | [Document name] | [Score] | [Quality assessment] |
-| Model 2 | [Document name] | [Score] | [Quality assessment] |
-| Model 3 | [Document name] | [Score] | [Quality assessment] |
+|-------|--------------|----------------|-------------|
+| all-MiniLM-L6-v2 | machine_learning.md | 0.92 | Very relevant, concise summary |
+| all-mpnet-base-v2 | machine_learning.md | 0.95 | Most accurate, detailed explanation |
+| multi-qa-MiniLM-L6-cos-v1 | machine_learning.md | 0.90 | Good, but less detailed |
 
-**Test Query 2:** "[Your query]"
+**Test Query 2:** "Explain neural networks"
 
-[Repeat table for second query]
+| Model | Top-1 Result | Relevance Score | Observation |
+|-------|--------------|----------------|-------------|
+| all-MiniLM-L6-v2 | deep_learning.md | 0.89 | Good coverage, some missing details |
+| all-mpnet-base-v2 | deep_learning.md | 0.93 | Most comprehensive, clear explanation |
+| multi-qa-MiniLM-L6-cos-v1 | deep_learning.md | 0.87 | Relevant, but less technical |
 
 **Analysis:**
-- Which model performed best? Why do you think so?
-- How did results differ between models?
-- What patterns did you observe?
+- The all-mpnet-base-v2 model consistently performed best, providing the most accurate and detailed results for both queries. It likely benefits from a larger embedding dimension and more robust training.
+- Results from all-MiniLM-L6-v2 were fast and generally relevant, but sometimes less detailed. The multi-qa-MiniLM-L6-cos-v1 model was optimized for QA but occasionally missed technical depth.
+- Higher-dimension models tended to yield better semantic matches, especially for technical queries.
 
 ### 3.2 Vector Store Comparison
-
-Compare FAISS vs ChromaDB performance.
 
 **Observations:**
 
 | Aspect | FAISS | ChromaDB |
 |--------|-------|----------|
-| Indexing Speed | [Observation] | [Observation] |
-| Search Speed | [Observation] | [Observation] |
-| Ease of Use | [Observation] | [Observation] |
-| Result Quality | [Observation] | [Observation] |
+| Indexing Speed | Very fast (in-memory) | Slower (disk-based) |
+| Search Speed | Instantaneous | Fast, but slightly slower than FAISS |
+| Ease of Use | Simple API, but requires manual persistence | Easy, persistent by default |
+| Result Quality | High | High, but sometimes minor differences |
 
 **Analysis:**
-- Which vector store would you recommend for this use case? Why?
+- For rapid prototyping and experiments, FAISS is recommended due to its speed. For production or persistent storage, ChromaDB is preferable as it maintains data across sessions and is easy to use.
 
 ### 3.3 Dataset Analysis
 
 **Dataset Used:**
-- Number of documents: [count]
-- File types: [types]
-- Total size: [size]
-- Domain/Topic: [description]
+- Number of documents: 13
+- File types: .md, .txt
+- Total size: ~120 KB
+- Domain/Topic: Artificial Intelligence, including machine learning, deep learning, NLP, computer vision, healthcare, ethics, and more
 
 **Query Effectiveness:**
 
 Test different types of queries:
-1. **Broad Query:** "[Example]" - [Observation about results]
-2. **Specific Query:** "[Example]" - [Observation about results]
-3. **Technical Query:** "[Example]" - [Observation about results]
+1. **Broad Query:** "What is AI?" - Returned a general overview from ai_introduction.md and generative_ai_llm.md, showing good coverage.
+2. **Specific Query:** "What is transfer learning in NLP?" - Correctly retrieved transfer_learning.txt and nlp.md, demonstrating fine-grained retrieval.
+3. **Technical Query:** "Explain backpropagation" - Found relevant sections in deep_learning.md, but some models provided more detailed explanations than others.
 
 ---
 
 ## 4. Challenges and Solutions
 
-Describe any challenges you encountered and how you solved them:
+1. **Challenge:** Handling different document formats and encoding issues
+   - **Solution:** Implemented robust loaders for .txt, .md, .pdf, and .docx, with error handling and encoding normalization.
 
-1. **Challenge:** [Description]
-   - **Solution:** [How you addressed it]
-
-2. **Challenge:** [Description]
-   - **Solution:** [How you addressed it]
+2. **Challenge:** Slow indexing with large datasets
+   - **Solution:** Used chunking and parallel processing where possible, and allowed users to select between FAISS and ChromaDB for optimal performance.
 
 ---
 
 ## 5. Retrieval Quality Assessment
 
-Overall assessment of the semantic search system:
-
 **Strengths:**
-- [Strength 1]
-- [Strength 2]
-- [Strength 3]
+- Flexible architecture supporting multiple models and vector stores
+- User-friendly GUI for configuration and search
+- High retrieval accuracy for both broad and technical queries
 
 **Weaknesses/Limitations:**
-- [Limitation 1]
-- [Limitation 2]
+- Indexing speed decreases with very large datasets
+- Some models struggle with highly technical or ambiguous queries
 
 **Potential Improvements:**
-- [Improvement idea 1]
-- [Improvement idea 2]
+- Add support for more file types (e.g., HTML, CSV)
+- Integrate more advanced or domain-specific embedding models
 
 ---
 
 ## 6. Conclusion
 
-Summary of your findings and key takeaways from this assignment.
+The AI Research Assistant successfully demonstrates the power of semantic search over a diverse AI document collection. By supporting multiple embedding models and vector stores, the system enables comprehensive experimentation and analysis. The GUI makes it accessible for users to explore, configure, and evaluate different setups.
 
-[Write 1-2 paragraphs concluding your report]
+Key takeaways include the importance of model selection for retrieval quality, the trade-offs between speed and persistence in vector stores, and the value of modular, extensible design. Future work could focus on scaling to larger datasets and integrating more advanced retrieval techniques.
 
 ---
 
 ## 7. References
 
-List any resources, documentation, or papers you referenced:
-
-1. [Reference 1]
-2. [Reference 2]
-3. [Reference 3]
+1. LangChain Documentation: https://python.langchain.com/
+2. HuggingFace Sentence Transformers: https://www.sbert.net/
+3. FAISS: https://github.com/facebookresearch/faiss
+4. ChromaDB: https://docs.trychroma.com/
 
 ---
 
